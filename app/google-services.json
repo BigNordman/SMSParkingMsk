@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "958400217459",
+    "project_id": "smsparkingmsk"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958400217459:android:7079f06aa3d89c90",
+        "android_client_info": {
+          "package_name": "com.nordman.big.smsparkingmsk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "958400217459-ur7l1r750la6voeao1bes7ve5rg5fgej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nordman.big.smsparkingmsk",
+            "certificate_hash": "48A9980883C33006A501BC97CE5642050D472494"
+          }
+        },
+        {
+          "client_id": "958400217459-6r2g8b5a0592ufgdd7kb4sr8ecus53iv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhG6w465JMwR2P_6aG0Pw0j9ajbwc8PXE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
