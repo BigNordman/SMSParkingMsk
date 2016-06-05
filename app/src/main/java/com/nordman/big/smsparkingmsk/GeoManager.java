@@ -176,7 +176,7 @@ public class GeoManager {
         ArrayList<ParkZone> zones = this.getParkZoneList();
 
         for(ParkZone zone : zones){
-            if (zone.getZoneNumber()==zoneNumber){
+            if (zone.getZoneNumber() == zoneNumber){
                 return zone;
             }
         }
