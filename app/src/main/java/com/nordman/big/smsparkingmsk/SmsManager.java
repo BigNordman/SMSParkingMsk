@@ -54,12 +54,12 @@ public class SmsManager{
     public void updateSms() {
         sms = "";
 
-        if (currentZone==null) {
+        if (parkNum.equals("")) {
             sms += "*";
         } else {
-            sms += currentZone.getZoneNumber().toString() + "*";
+            sms += parkNum + "*";
         }
-        sms += regNum.toUpperCase() + "*" + hours + "*B";
+        sms += regNum.toUpperCase() + "*" + hours ;
     }
 
     public int getProgress(){

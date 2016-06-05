@@ -92,6 +92,8 @@ public class GeoManager {
         if (curLocation != null) {
             result = factory.createPoint(new Coordinate(curLocation.getLatitude(),curLocation.getLongitude()));
         }
+
+        //result = factory.createPoint(new Coordinate(55.749644,37.599726));
         return result;
     }
 

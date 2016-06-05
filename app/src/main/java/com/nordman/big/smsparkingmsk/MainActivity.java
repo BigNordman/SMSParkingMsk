@@ -213,15 +213,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SmsManager smsMgr = ((MainActivity)getActivity()).smsMgr;
+                GeoManager geoManager = ((MainActivity)getActivity()).geoMgr;
 
                 Log.d("LOG", (String) ((Button) v).getText());
                 String keyPressed = (String) ((Button) v).getText();
                 if (keyPressed.equals("<-")) {
                     if (smsMgr.parkNum.length()>0) {
+                        smsMgr.currentZone = null;
                         smsMgr.parkNum = smsMgr.parkNum.substring(0,smsMgr.parkNum.length()-1);
                     }
                 } else {
                     smsMgr.parkNum = smsMgr.parkNum + keyPressed;
+                    smsMgr.currentZone = geoManager.getParkZone(Integer.parseInt(smsMgr.parkNum));
                 }
                 smsMgr.saveState();
                 ((MainActivity)getActivity()).updateView();
@@ -515,7 +518,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                     */
                     TextView zoneDesc = (TextView) this.findViewById(R.id.zoneDesc);
-                    if (smsMgr.parkNum != "") {
+                    if (smsMgr.currentZone != null) {
+                        smsMgr.parkNum =smsMgr.currentZone.getZoneNumber().toString();
+                        zoneDesc.setText(smsMgr.currentZone.getZoneDesc());
+                    } else {
+                        zoneDesc.setText("");
+                    }
+                    if (!smsMgr.parkNum.equals("")) {
                         ((TextView) view.findViewById(R.id.parkNumText)).setText(smsMgr.parkNum);
                         //zoneDesc.setText(smsMgr.currentZone.getZoneDesc());
                         zoneDesc.setTextColor(Color.BLACK);
@@ -541,8 +550,8 @@ public class MainActivity extends AppCompatActivity {
                     (view.findViewById(R.id.buttonPay)).setEnabled(true);
                     ((TextView) view.findViewById(R.id.regNumText)).setText(smsMgr.regNum);
                     TextView parkNumText =(TextView) view.findViewById(R.id.parkNumText);
-                    if (smsMgr.currentZone != null) {
-                        parkNumText.setText(smsMgr.currentZone.getZoneNumber().toString());
+                    if (!smsMgr.parkNum.equals("")) {
+                        parkNumText.setText(smsMgr.parkNum);
                         parkNumText.setTextColor(ContextCompat.getColor(this, R.color.colorMaterialGrey));
 
                     } else {
