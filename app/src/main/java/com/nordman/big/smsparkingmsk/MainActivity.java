@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     static final int PAGE_COUNT = 3;
     public static final long TICK_INTERVAL = 1000;
     public static final long MAX_TICK_WAITING = 60;
+    private static final int PERMISSION_ACCESS_FINE_LOCATION = 2;
 
     SmsManager smsMgr;
     GeoManager geoMgr;
@@ -274,6 +275,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity)getActivity();
+
+                if (ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(mainActivity, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_ACCESS_FINE_LOCATION);
+                }
+
+                /*
                 GeoManager geoMgr = mainActivity.geoMgr;
                 SmsManager smsMgr = mainActivity.smsMgr;
                 Log.d("LOG", geoMgr.getCoordinates());
@@ -286,8 +293,11 @@ public class MainActivity extends AppCompatActivity {
 
                 smsMgr.saveState();
                 mainActivity.updateView();
+                */
+                mainActivity.tryToGetParkZone();
             }
         };
+
 
         private View.OnClickListener buttonHourListener = new View.OnClickListener(){
             @Override
@@ -752,7 +762,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_SMS: {
+            case MY_PERMISSIONS_REQUEST_READ_SMS:
                 // If request is cancelled, the result arrays are empty.
                 if (!(grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // permission denied, boo! Disable the
@@ -761,7 +771,17 @@ public class MainActivity extends AppCompatActivity {
                     smsMgr.saveState();
                     Log.d("LOG",".......permission not granted");
                 }
-            }
+                break;
+            case PERMISSION_ACCESS_FINE_LOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Toast.makeText(this, "Location permission granted!", Toast.LENGTH_SHORT).show();
+                    Log.d("LOG",".......Location permission granted");
+                    geoMgr = new GeoManager(this);
+                    this.tryToGetParkZone();
+                } else {
+                    Toast.makeText(this, "Необходимо разрешение на определение местонахождения!", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
@@ -776,6 +796,22 @@ public class MainActivity extends AppCompatActivity {
     private void slide(int direction) {
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setCurrentItem(mViewPager.getCurrentItem()+direction);
+
+    }
+
+    private void tryToGetParkZone(){
+        GeoManager geoMgr = this.geoMgr;
+        SmsManager smsMgr = this.smsMgr;
+        Log.d("LOG", geoMgr.getCoordinates());
+        Toast.makeText(this, geoMgr.getCoordinates(), Toast.LENGTH_LONG).show();
+
+        if ( (smsMgr.appStatus==SmsManager.STATUS_SMS_NOT_SENT) ||(smsMgr.appStatus==SmsManager.STATUS_SMS_NOT_RECEIVED)) smsMgr.appStatus=SmsManager.STATUS_INITIAL;
+
+        smsMgr.parkNum = "";
+        smsMgr.currentZone = geoMgr.getParkZone();
+
+        smsMgr.saveState();
+        this.updateView();
 
     }
 
