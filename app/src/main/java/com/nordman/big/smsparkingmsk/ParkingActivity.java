@@ -56,6 +56,7 @@ public class ParkingActivity extends Activity {
         */
 
         mAdView.loadAd(adRequest);
+        AppRater.app_launched(this);
     }
 
     protected void onResume() {
